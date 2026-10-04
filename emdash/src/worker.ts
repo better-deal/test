@@ -29,6 +29,7 @@ export default {
           JSON.stringify({
             ok: false,
             error: error instanceof Error ? error.message : String(error),
+            stack: error instanceof Error ? error.stack : undefined,
           }),
           {
             status: 500,
@@ -38,7 +39,25 @@ export default {
       }
     }
 
-    return handler.fetch(request, env, ctx);
+    try {
+      return await handler.fetch(request, env, ctx);
+    } catch (error) {
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+          path: url.pathname,
+        }),
+        {
+          status: 500,
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            "cache-control": "no-store",
+          },
+        },
+      );
+    }
   },
 
   scheduled: createScheduledHandler(),
