@@ -1,0 +1,168 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "NorTh Menu",
+    "description": "NorTh ノース 戸塚の商品メニュー管理",
+    "author": "better-deal"
+  },
+  "settings": {
+    "title": "NorTh ノース 戸塚 メニュー管理",
+    "tagline": "EmDashでメニューを管理"
+  },
+  "collections": [
+    {
+      "slug": "products",
+      "label": "Products",
+      "labelSingular": "Product",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "scheduling",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "name",
+          "label": "商品名",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "price",
+          "label": "価格",
+          "type": "integer",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "category",
+          "label": "カテゴリ",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "description",
+          "label": "説明",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "featured",
+          "label": "おすすめ",
+          "type": "boolean"
+        },
+        {
+          "slug": "sortOrder",
+          "label": "表示順",
+          "type": "integer",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "image",
+          "label": "写真",
+          "type": "image"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "products": [
+      {
+        "id": "chicken",
+        "slug": "chicken",
+        "status": "published",
+        "data": {
+          "name": "スープカレー チキン",
+          "price": 1400,
+          "category": "SOUP CURRY",
+          "description": "野菜とチキンを楽しめる、NorThの看板メニュー。",
+          "featured": true,
+          "sortOrder": 1
+        }
+      },
+      {
+        "id": "cream",
+        "slug": "cream",
+        "status": "published",
+        "data": {
+          "name": "スープカレー クリームカレー",
+          "price": 1400,
+          "category": "SOUP CURRY",
+          "sortOrder": 2
+        }
+      },
+      {
+        "id": "pork",
+        "slug": "pork",
+        "status": "published",
+        "data": {
+          "name": "スープカレー 豚しゃぶカレー",
+          "price": 1300,
+          "category": "SOUP CURRY",
+          "sortOrder": 3
+        }
+      },
+      {
+        "id": "sausage",
+        "slug": "sausage",
+        "status": "published",
+        "data": {
+          "name": "スープカレー ウインナーカレー",
+          "price": 1100,
+          "category": "SOUP CURRY",
+          "sortOrder": 4
+        }
+      },
+      {
+        "id": "vegetable",
+        "slug": "vegetable",
+        "status": "published",
+        "data": {
+          "name": "スープカレー ベジタブルカレー",
+          "price": 1000,
+          "category": "SOUP CURRY",
+          "sortOrder": 5
+        }
+      },
+      {
+        "id": "zangi",
+        "slug": "zangi",
+        "status": "published",
+        "data": {
+          "name": "ザンギ",
+          "price": 590,
+          "category": "ZANGI",
+          "description": "トッピングでチーズ、甘辛、ホットチリなどにも。",
+          "sortOrder": 6
+        }
+      },
+      {
+        "id": "zangi-half",
+        "slug": "zangi-half",
+        "status": "published",
+        "data": {
+          "name": "ザンギ ハーフ",
+          "price": 400,
+          "category": "ZANGI",
+          "sortOrder": 7
+        }
+      },
+      {
+        "id": "ramen-salad",
+        "slug": "ramen-salad",
+        "status": "published",
+        "data": {
+          "name": "ラーメンサラダ",
+          "price": 600,
+          "category": "SALAD",
+          "sortOrder": 8
+        }
+      }
+    ]
+  }
+}
