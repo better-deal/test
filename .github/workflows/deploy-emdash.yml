@@ -9,6 +9,10 @@ on:
       - ".github/workflows/deploy-emdash.yml"
   workflow_dispatch:
 
+concurrency:
+  group: emdash-deploy
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
