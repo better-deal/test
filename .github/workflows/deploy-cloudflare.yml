@@ -28,4 +28,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=better-deal-test --branch=main
+          command: |
+            pages project create better-deal-test --production-branch=main || true
+            pages deploy . --project-name=better-deal-test --branch=main
