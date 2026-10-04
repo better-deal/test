@@ -61,11 +61,6 @@
           "type": "integer",
           "required": true,
           "indexed": true
-        },
-        {
-          "slug": "image",
-          "label": "写真",
-          "type": "image"
         }
       ]
     }
