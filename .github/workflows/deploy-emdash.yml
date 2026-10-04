@@ -36,13 +36,44 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Deploy EmDash
+      - name: Build EmDash
+        run: npm run build
+
+      - name: Inspect migration target
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npm run deploy
+        run: |
+          npx emdash migrate --status --json \
+            --account-id "$CLOUDFLARE_ACCOUNT_ID" \
+            --d1 north-emdash | tee /tmp/emdash-migration-status.json
 
-      - name: Diagnose admin HTTP 500
+      - name: Apply EmDash D1 migrations
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          FINGERPRINT=$(node -e '
+            const fs = require("fs");
+            const report = JSON.parse(fs.readFileSync("/tmp/emdash-migration-status.json", "utf8"));
+            if (!report.target?.fingerprint) {
+              throw new Error("Migration target fingerprint was not returned.");
+            }
+            process.stdout.write(report.target.fingerprint);
+          ')
+          echo "Applying migrations to target fingerprint: $FINGERPRINT"
+          npx emdash migrate \
+            --account-id "$CLOUDFLARE_ACCOUNT_ID" \
+            --d1 north-emdash \
+            --expected-target-fingerprint "$FINGERPRINT"
+
+      - name: Deploy EmDash Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+
+      - name: Diagnose EmDash
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
