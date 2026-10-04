@@ -11,7 +11,7 @@ on:
 
 concurrency:
   group: emdash-deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -72,35 +72,3 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler deploy
-
-      - name: Diagnose EmDash
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          set +e
-          npx wrangler tail north-emdash --format json --status error --sampling-rate 0.99 > /tmp/wrangler-tail.log 2>&1 &
-          TAIL_PID=$!
-          sleep 5
-          echo "DIRECT D1 DEBUG:"
-          curl -sS -D /tmp/debug.headers -o /tmp/debug.json -w "%{http_code}\n" https://north-emdash.komure-dad.workers.dev/__debug-db
-          cat /tmp/debug.json || true
-          echo
-          echo "ADMIN HTTP:"
-          curl -sS -D /tmp/admin.headers -o /tmp/emdash-admin.html -w "%{http_code}\n" https://north-emdash.komure-dad.workers.dev/_emdash/admin
-          echo "SETUP STATUS HTTP:"
-          curl -sS -D /tmp/status.headers -o /tmp/setup-status.json -w "%{http_code}\n" https://north-emdash.komure-dad.workers.dev/_emdash/api/setup/status
-          echo "ROOT HTTP:"
-          curl -sS -D /tmp/root.headers -o /tmp/root.html -w "%{http_code}\n" https://north-emdash.komure-dad.workers.dev/
-          sleep 8
-          kill $TAIL_PID 2>/dev/null || true
-          echo "---- Worker error tail ----"
-          cat /tmp/wrangler-tail.log || true
-          echo "---- Admin response head ----"
-          head -c 1500 /tmp/emdash-admin.html || true
-          echo
-          echo "---- Setup status body ----"
-          cat /tmp/setup-status.json || true
-          echo
-          echo "---- Admin headers ----"
-          cat /tmp/admin.headers || true
