@@ -12,6 +12,7 @@ export default defineConfig({
     emdash({
       database: d1({ binding: "DB", session: "auto" }),
       images: false,
+      siteUrl: "https://north-emdash.komure-dad.workers.dev",
     }),
   ],
   devToolbar: { enabled: false },
