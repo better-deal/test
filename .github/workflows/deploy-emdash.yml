@@ -47,11 +47,21 @@ jobs:
           npx wrangler tail north-emdash --format json --status error --sampling-rate 0.99 > /tmp/wrangler-tail.log 2>&1 &
           TAIL_PID=$!
           sleep 5
-          echo "HTTP status:"
-          curl -sS -o /tmp/emdash-admin.html -w "%{http_code}\n" https://north-emdash.komure-dad.workers.dev/_emdash/admin
+          echo "ADMIN HTTP:"
+          curl -sS -D /tmp/admin.headers -o /tmp/emdash-admin.html -w "%{http_code}\n" https://north-emdash.komure-dad.workers.dev/_emdash/admin
+          echo "SETUP STATUS HTTP:"
+          curl -sS -D /tmp/status.headers -o /tmp/setup-status.json -w "%{http_code}\n" https://north-emdash.komure-dad.workers.dev/_emdash/api/setup/status
+          echo "ROOT HTTP:"
+          curl -sS -D /tmp/root.headers -o /tmp/root.html -w "%{http_code}\n" https://north-emdash.komure-dad.workers.dev/
           sleep 8
           kill $TAIL_PID 2>/dev/null || true
           echo "---- Worker error tail ----"
           cat /tmp/wrangler-tail.log || true
           echo "---- Admin response head ----"
           head -c 1500 /tmp/emdash-admin.html || true
+          echo
+          echo "---- Setup status body ----"
+          cat /tmp/setup-status.json || true
+          echo
+          echo "---- Admin headers ----"
+          cat /tmp/admin.headers || true
