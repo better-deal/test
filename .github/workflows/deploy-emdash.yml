@@ -44,14 +44,14 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set +e
-          npx wrangler tail north-emdash --format json --status error --sampling-rate 1 > /tmp/wrangler-tail.log 2>&1 &
+          npx wrangler tail north-emdash --format json --status error --sampling-rate 0.99 > /tmp/wrangler-tail.log 2>&1 &
           TAIL_PID=$!
           sleep 5
           echo "HTTP status:"
           curl -sS -o /tmp/emdash-admin.html -w "%{http_code}\n" https://north-emdash.komure-dad.workers.dev/_emdash/admin
-          sleep 5
+          sleep 8
           kill $TAIL_PID 2>/dev/null || true
           echo "---- Worker error tail ----"
           cat /tmp/wrangler-tail.log || true
           echo "---- Admin response head ----"
-          head -c 1000 /tmp/emdash-admin.html || true
+          head -c 1500 /tmp/emdash-admin.html || true
