@@ -27,3 +27,6 @@ Cloudflare Pages の **Settings → Environment variables** に次の3つを設�
 公開した商品が `/_emdash/api/content/{collection}` で取得できるよう、トークンには `content:read` を付与します。
 
 環境変数がまだ設定されていない間は、サイトは現在のNorThメニューをフォールバック表示します。
+
+
+<!-- Cloudflare deploy verification: 2026-10-05 -->
