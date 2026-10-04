@@ -32,6 +32,9 @@ jobs:
       - name: Enable pnpm
         run: corepack enable
 
+      - name: Allow required dependency build scripts
+        run: pnpm config set --location project onlyBuiltDependencies '["esbuild","workerd"]'
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
