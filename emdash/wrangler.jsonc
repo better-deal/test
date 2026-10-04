@@ -16,12 +16,6 @@
       "database_name": "north-emdash"
     }
   ],
-  "r2_buckets": [
-    {
-      "binding": "MEDIA",
-      "bucket_name": "north-emdash-media"
-    }
-  ],
   "triggers": {
     "crons": ["* * * * *"]
   }
