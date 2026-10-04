@@ -40,7 +40,26 @@ export default {
     }
 
     try {
-      return await handler.fetch(request, env, ctx);
+      const response = await handler.fetch(request, env, ctx);
+      if (response.status < 500) return response;
+
+      const body = await response.clone().text();
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          upstreamStatus: response.status,
+          upstreamHeaders: Object.fromEntries(response.headers),
+          upstreamBody: body.slice(0, 5000),
+          path: url.pathname,
+        }),
+        {
+          status: 500,
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            "cache-control": "no-store",
+          },
+        },
+      );
     } catch (error) {
       return new Response(
         JSON.stringify({
