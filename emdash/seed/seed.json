@@ -51,6 +51,12 @@
           "searchable": true
         },
         {
+          "slug": "image_url",
+          "label": "画像URL",
+          "type": "url",
+          "helpText": "GitHubの画像ファイルURL（blob形式も可）"
+        },
+        {
           "slug": "featured",
           "label": "おすすめ",
           "type": "boolean"
