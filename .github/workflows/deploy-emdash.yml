@@ -67,6 +67,18 @@ jobs:
             --d1 north-emdash \
             --expected-target-fingerprint "$FINGERPRINT"
 
+      - name: Ensure menu image URL field
+        env:
+          EMDASH_TOKEN: ${{ secrets.EMDASH_TOKEN }}
+        run: |
+          if npx emdash schema get products --url https://north-emdash.komure-dad.workers.dev >/tmp/products-schema.json 2>/dev/null; then
+            if grep -q 'image_url' /tmp/products-schema.json; then
+              echo "image_url field already exists."
+              exit 0
+            fi
+          fi
+          npx emdash schema add-field products image_url --type url --label "画像URL" --url https://north-emdash.komure-dad.workers.dev --token "$EMDASH_TOKEN"
+
       - name: Deploy EmDash Worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
