@@ -19,7 +19,7 @@ export default defineConfig({
         config: {},
       },
       images: false,
-      siteUrl: "https://north-emdash.komure-dad.workers.dev",
+      siteUrl: "https://better-deal-test.pages.dev",
     }),
   ],
   devToolbar: { enabled: false },
