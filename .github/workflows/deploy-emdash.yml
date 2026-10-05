@@ -89,6 +89,12 @@ jobs:
           echo "---- Admin response body ----"
           head -c 2000 /tmp/admin.html
           echo
+          echo "---- Setup HTTP response ----"
+          curl -sS -D /tmp/setup-headers.txt -o /tmp/setup.html -w "SETUP_HTTP_STATUS=%{http_code}\n" https://north-emdash.komure-dad.workers.dev/_emdash/admin/setup
+          cat /tmp/setup-headers.txt
+          echo "---- Setup response body ----"
+          head -c 4000 /tmp/setup.html
+          echo
           sleep 3
           kill $TAIL_PID 2>/dev/null || true
           echo "---- Worker runtime errors ----"
