@@ -12,10 +12,10 @@ const FALLBACK_ITEMS = [
 export async function onRequestGet(context) {
   const corsHeaders = {
     "content-type": "application/json; charset=utf-8",
-    "cache-control": "public, max-age=60, s-maxage=300"
+    "cache-control": "no-store"
   };
 
-  const apiBase = String(context.env?.EMDASH_API_URL ?? "").replace(/\/$/, "");
+  const apiBase = String(\n    context.env?.EMDASH_API_URL ??\n      "https://north-emdash.komure-dad.workers.dev"\n  ).replace(/\/$/, "");
   const token = String(context.env?.EMDASH_TOKEN ?? "");
   const collection = String(context.env?.EMDASH_COLLECTION ?? "products");
 
