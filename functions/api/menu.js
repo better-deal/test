@@ -15,7 +15,10 @@ export async function onRequestGet(context) {
     "cache-control": "no-store"
   };
 
-  const apiBase = String(\n    context.env?.EMDASH_API_URL ??\n      "https://north-emdash.komure-dad.workers.dev"\n  ).replace(/\/$/, "");
+  const apiBase = String(
+    context.env?.EMDASH_API_URL ??
+      "https://north-emdash.komure-dad.workers.dev"
+  ).replace(/\/$/, "");
   const token = String(context.env?.EMDASH_TOKEN ?? "");
   const collection = String(context.env?.EMDASH_COLLECTION ?? "products");
 
