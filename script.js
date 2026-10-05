@@ -26,6 +26,22 @@ const escapeHtml = (value = "") =>
     "'": "&#039;"
   }[char]));
 
+function normalizeImageUrl(value) {
+  const url = String(value ?? "").trim();
+  if (!url) return "";
+
+  // Accept normal GitHub file links pasted from the browser.
+  const githubBlob = url.match(
+    /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/
+  );
+  if (githubBlob) {
+    const [, owner, repo, ref, path] = githubBlob;
+    return `https://raw.githubusercontent.com/${owner}/${repo}/${ref}/${path}`;
+  }
+
+  return url;
+}
+
 function normalizeMenuItem(item, index) {
   const data = item?.data ?? item ?? {};
   return {
@@ -36,7 +52,9 @@ function normalizeMenuItem(item, index) {
     price: data.price ?? data.amount ?? data.priceYen ?? "",
     featured: Boolean(data.featured ?? data.isFeatured ?? index === 0),
     accent: Boolean(data.accent),
-    image: data.image?.url ?? data.imageUrl ?? data.photoUrl ?? "",
+    image: normalizeImageUrl(
+      data.image?.url ?? data.image_url ?? data.imageUrl ?? data.photoUrl ?? ""
+    ),
     sortOrder: Number(data.sort_order ?? data.sortOrder ?? data.order ?? data.displayOrder ?? index + 1)
   };
 }
