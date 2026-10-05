@@ -92,6 +92,7 @@ function renderMenu(items, source) {
 
   gridRoot.innerHTML = cards.map((item) => `
     <article class="menu-card${item.accent ? " accent" : ""}">
+      ${item.image ? `<div class="menu-card-image" style="background-image:url('${escapeHtml(item.image)}');"></div>` : ""}
       <span>${escapeHtml(item.category)}</span>
       <h3>${escapeHtml(item.name)}</h3>
       ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ""}
