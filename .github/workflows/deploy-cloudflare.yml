@@ -34,7 +34,6 @@ jobs:
           npx wrangler pages project create better-deal-test --production-branch=main || true
 
       - name: Configure EmDash API token
-        if: ${{ secrets.EMDASH_TOKEN != '' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
