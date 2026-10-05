@@ -37,7 +37,7 @@ function normalizeMenuItem(item, index) {
     featured: Boolean(data.featured ?? data.isFeatured ?? index === 0),
     accent: Boolean(data.accent),
     image: data.image?.url ?? data.imageUrl ?? data.photoUrl ?? "",
-    sortOrder: Number(data.sortOrder ?? data.order ?? data.displayOrder ?? index + 1)
+    sortOrder: Number(data.sort_order ?? data.sortOrder ?? data.order ?? data.displayOrder ?? index + 1)
   };
 }
 
