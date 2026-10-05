@@ -46,4 +46,20 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler pages deploy . --project-name=better-deal-test --branch=main
 
+      - name: Verify public menu API
+        run: |
+          echo "Waiting for Pages deployment..."
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            BODY="$(curl -fsS https://better-deal-test.pages.dev/api/menu || true)"
+            echo "$BODY"
+            if echo "$BODY" | grep -q '"source":"emdash"'; then
+              echo "EmDash menu connection verified."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "EmDash menu connection was not verified."
+          exit 1
+
+
 # Trigger deployment after the latest site update.
